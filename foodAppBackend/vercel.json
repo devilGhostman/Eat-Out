@@ -1,0 +1,19 @@
+{
+   "version": 2,
+   "name": "food-App-Backend",
+   "builds": [
+      { "src": "app.js", "use": "@vercel/node" }
+   ],
+   "routes": [
+      { "src": "/(.*)", "dest": "/app.js" ,"methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "OPTIONS",
+        "DELETE"
+      ]}
+   ]
+
+
+}
