@@ -8,11 +8,11 @@ const http = require("http");
 const userRoutes = require("./routes/user-routes");
 const resturantRoutes = require("./routes/resturant-routes");
 
-app.use("/userProfile", express.static("userProfile"));
-
 const app = express();
 const server = http.createServer(app);
 dotenv.config();
+
+app.use("/userProfile", express.static("userProfile"));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
