@@ -1,5 +1,5 @@
 import {View, Text, SafeAreaView, Pressable, Image} from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 
 import InputField from '../components/Input/InputField';
 import CustomButton from '../components/Button/CustomButton';
@@ -8,8 +8,15 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {useForm} from 'react-hook-form';
+import {useDispatch, useSelector} from 'react-redux';
+import {loginHandler} from '../app/slices/user';
 
 const Login = ({navigation}: any) => {
+  const dispatch = useDispatch();
+  const {isLoading, isError, user, token} = useSelector(
+    (state: any) => state.user,
+  );
+
   const {
     control,
     handleSubmit,
@@ -18,12 +25,11 @@ const Login = ({navigation}: any) => {
   } = useForm<{email: string; password: string}>();
 
   const onSignIn = (data: {email: string; password: string}) => {
-    console.log(data);
+    loginHandler(dispatch, data);
   };
 
   const onSignInTestUser = () => {
-    console.log('clicked');
-    // login({email: 'rahul@gmail.com', password: 'test@123'});
+    loginHandler(dispatch, {email: 'test@gmail.com', password: 'test@1234'});
   };
 
   useEffect(() => {
@@ -37,11 +43,11 @@ const Login = ({navigation}: any) => {
       <View className="px-6">
         <View className="h-[150px] w-[95%]  flex-row items-center justify-center">
           <Image
-            source={require('../assets/category.png')}
+            source={require('../assets/images/logo2.png')}
             className="h-[100%] w-[100%]"
           />
         </View>
-        <Text className="text-[28px] font-bold mt-7 mb-4 text-lightText dark:text-darkText">
+        <Text className="text-[28px] font-bold mt-2 mb-4 text-lightText dark:text-darkText">
           Login
         </Text>
         <InputField
@@ -82,11 +88,11 @@ const Login = ({navigation}: any) => {
             },
           }}
         />
-        {/* {isError && (
+        {isError && (
           <Text className="font-medium text-red-500 text-center">
             Invalid Credential
           </Text>
-        )} */}
+        )}
         <CustomButton onPress={handleSubmit(onSignIn)} text={'Sign In'} />
         <CustomButton onPress={onSignInTestUser} text={'Sign In As TestUser'} />
 

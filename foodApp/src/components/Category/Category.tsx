@@ -1,9 +1,14 @@
 import {View, Text, ScrollView, Pressable, Image} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {categories} from '../../constants/constants';
 
-const Category = () => {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+const Category = ({handleCategory}: any) => {
+  const [activeCategory, setActiveCategory] = useState<string | null>('1');
+
+  const selectCategory = (name: string) => {
+    handleCategory(name);
+  };
+
   return (
     <View className="mt-4">
       <ScrollView
@@ -27,7 +32,9 @@ const Category = () => {
               key={category.id}
               className="flex justify-center items-center mr-2 ">
               <Pressable
-                onPress={() => setActiveCategory(category.id)}
+                onPress={() => {
+                  setActiveCategory(category.id), selectCategory(category.name);
+                }}
                 className={
                   'p-1 rounded-full shadow flex flex-row justify-center items-center min-w-[100px]  ' +
                   btnClass

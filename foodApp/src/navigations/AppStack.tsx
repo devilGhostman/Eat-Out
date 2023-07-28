@@ -17,7 +17,12 @@ const Tab = createBottomTabNavigator();
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import {useSelector, useDispatch} from 'react-redux';
+
 function TabNavigation() {
+  const favItemsQuantity = useSelector(
+    (state: any) => state.favourite.quantity,
+  );
   const colorScheme = Appearance.getColorScheme();
   return (
     <Tab.Navigator
@@ -71,7 +76,7 @@ function TabNavigation() {
         name="Favourite"
         component={Favourite}
         options={{
-          tabBarBadge: 3,
+          tabBarBadge: favItemsQuantity,
           tabBarBadgeStyle: {backgroundColor: 'red'},
           tabBarShowLabel: false,
           tabBarIcon: ({focused}) => {

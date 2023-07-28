@@ -1,8 +1,8 @@
 const categories = [
     {
         id:"1",
-        name:"Biryani",
-        picture:"https://b.zmtcdn.com/data/dish_images/d19a31d42d5913ff129cafd7cec772f81639737697.png"
+        name:"Burger",
+        picture:"https://b.zmtcdn.com/data/dish_images/ccb7dc2ba2b054419f805da7f05704471634886169.png"
     },
     {
         id:"2",
@@ -11,8 +11,8 @@ const categories = [
     },
     {
         id:"3",
-        name:"Burger",
-        picture:"https://b.zmtcdn.com/data/dish_images/ccb7dc2ba2b054419f805da7f05704471634886169.png"
+        name:"Biryani",
+        picture:"https://b.zmtcdn.com/data/dish_images/d19a31d42d5913ff129cafd7cec772f81639737697.png"
     },
     {
         id:"4",

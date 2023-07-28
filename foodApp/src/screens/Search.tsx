@@ -6,15 +6,54 @@ import {
   TextInput,
   Pressable,
   ScrollView,
+  FlatList,
+  Image,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+
+import Loader from '../components/Loading/Loader';
 
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import Card from '../components/SearchCard/Card';
+import {fetchResturantBySearch} from '../api/apiCall';
 
 const Search = ({navigation}: any) => {
+  const [resturantName, setresturantName] = useState('');
+  const [resturants, setResturants] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const searchInputRef = useRef<TextInput>(null);
+
+  const handleSearch = (resturantName: string) => {
+    if (resturantName && resturantName.length > 1) {
+      setLoading(true);
+      fetchResturantBySearch(resturantName).then(data => {
+        if (data) setResturants(data.resturants);
+        setLoading(false);
+      });
+    } else {
+      setResturants([]);
+    }
+  };
+  useEffect(() => {
+    handleSearch(resturantName);
+  }, [resturantName]);
+
+  const focusSearchInput = () => {
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  };
+
+  useEffect(() => {
+    focusSearchInput();
+  }, []);
+
+  // console.log(resturantName);
+  // console.log(resturants);
+  // console.log(resturants.length);
+
   return (
-    <SafeAreaView className="bg-lightBg dark:bg-darkBg">
+    <SafeAreaView className="bg-lightBg dark:bg-darkBg h-full">
       <StatusBar />
       <View className="flex-row items-center justify-center w-full space-x-2 px-4 my-3">
         <View
@@ -30,9 +69,14 @@ const Search = ({navigation}: any) => {
         <View className="flex-row flex-1 items-center px-3 py-1 rounded-lg border border-gray-300">
           <FeatherIcon name="search" size={20} color="grey" />
           <TextInput
+            ref={searchInputRef}
             placeholder="Resturants"
             className="ml-2 flex-1"
             keyboardType="default"
+            onChangeText={text => {
+              setresturantName(text);
+            }}
+            value={resturantName}
           />
           <View className="flex-row items-center space-x-1 border-0 border-l-2 pl-2 border-l-gray-300">
             <FeatherIcon name="map-pin" size={20} color="grey" />
@@ -47,14 +91,16 @@ const Search = ({navigation}: any) => {
           Near By Resturants
         </Text>
       </View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingBottom: 150,
-        }}
-        className="h-full w-full">
-        <Card />
-      </ScrollView>
+      {resturants.length > 0 && (
+        <View className="bg-lightBg h-full">
+          <FlatList
+            data={resturants}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(resturants, index: any) => index}
+            renderItem={({item}) => <Card data={item} />}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 };

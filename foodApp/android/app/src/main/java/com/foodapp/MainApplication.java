@@ -11,6 +11,7 @@ import com.facebook.soloader.SoLoader;
 import java.util.List;
 
 import com.airbnb.android.react.lottie.LottiePackage;   //Lottie
+import org.devio.rn.splashscreen.SplashScreenReactPackage;  //splsh screen
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -28,6 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           packages.add(new LottiePackage()); // Lottie
+           new SplashScreenReactPackage();   //splash screen
           return packages;
         }
 

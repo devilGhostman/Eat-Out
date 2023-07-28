@@ -9,8 +9,8 @@ const userRegisterEndpoint = `${apiBaseUrl}/users/signup`
 const getResturantsEndpoint = `${apiBaseUrl}/resturants`
 
 const getResturantsByIDEndpoint = (id:string) => `${apiBaseUrl}/resturants/${id}`
-const getResturantsByCategoryEndpoint = (category:string) => `${apiBaseUrl}/resturants/${category}`
-
+const getResturantsByCategoryEndpoint = (category:string) => `${apiBaseUrl}/resturants?category=${category}`
+const searchResturantsEndpoint = (name:string) => `${apiBaseUrl}/resturants?search=${name}`
 
 const apiCall = async (method:string, endpoint: string, data?: string|object)=>{
     const options = {
@@ -19,7 +19,9 @@ const apiCall = async (method:string, endpoint: string, data?: string|object)=>{
         data: data ? data: {}
     };
     try{
+        // console.log(options)
         const response = await axios.request(options);
+        // console.log(response.data)
         return response.data;
     }catch(error){
         console.log('error: ',error);
@@ -45,4 +47,8 @@ export const fetchResturantsByID=(id:string)=>{
 
 export const fetchResturantsByCategory=(category:string)=>{
     return apiCall('GET',getResturantsByCategoryEndpoint(category))
+}
+
+export const fetchResturantBySearch = (name:string) => {
+    return apiCall('GET',searchResturantsEndpoint(name))
 }

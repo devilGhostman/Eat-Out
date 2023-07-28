@@ -13,17 +13,38 @@ import React, {useEffect, useState} from 'react';
 import Category from '../components/Category/Category';
 import ResturantsList from '../components/Resturant/ResturantsList';
 import Offers from '../components/Swiper/Offers';
+import Loader from '../components/Loading/Loader';
 
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import {fetchResturants} from '../api/apiCall';
+import {fetchResturants, fetchResturantsByCategory} from '../api/apiCall';
+
+import {useDispatch, useSelector} from 'react-redux';
 
 const Home = ({navigation}: any) => {
+  const {user} = useSelector((state: any) => state.user);
+
   const [resturants, setResturants] = useState([]);
+  const [category, setCategory] = useState('Burger');
+  const [categoryItem, setcategoryItem] = useState([]);
+
   const [loading, setLoading] = useState(true);
+
+  const handleCategory = (data: any) => {
+    setCategory(data);
+  };
 
   const getResturants = async () => {
     const data = await fetchResturants();
     if (data) {
+      setResturants(data.resturants);
+      setLoading(false);
+    }
+  };
+
+  const getResturantsCategory = async (category: string) => {
+    const data = await fetchResturantsByCategory(category);
+    if (data) {
+      setcategoryItem(data.resturants);
       setLoading(false);
     }
   };
@@ -32,6 +53,18 @@ const Home = ({navigation}: any) => {
     setLoading(true);
     getResturants();
   }, []);
+
+  useEffect(() => {
+    getResturantsCategory(category);
+  }, [category]);
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  // console.log(categoryItem);
+  // console.log(resturants);
+  // console.log(category);
 
   return (
     <SafeAreaView className="bg-lightBg dark:bg-darkBg">
@@ -47,7 +80,9 @@ const Home = ({navigation}: any) => {
           <View>
             <View className="flex-row justify-start items-center">
               <Text className="text-[28px]">Hello,</Text>
-              <Text className="text-[28px] font-bold ml-2">User</Text>
+              <Text className="text-[28px] font-bold ml-2">
+                {user.userName}
+              </Text>
             </View>
             <Text
               className=" text-[22px] text-lightText dark:text-darkText
@@ -56,7 +91,7 @@ const Home = ({navigation}: any) => {
             </Text>
           </View>
           <Image
-            source={require('../assets/category.png')}
+            source={{uri: user.userPicture}}
             style={{height: 50, width: 50, borderRadius: 25}}
           />
         </View>
@@ -93,10 +128,22 @@ const Home = ({navigation}: any) => {
         {/* Banner Section */}
         <Offers />
         {/* Category Section */}
-        <Category />
+        <Category handleCategory={handleCategory} />
         {/* Resturants List */}
-        <ResturantsList />
-        <ResturantsList />
+        {categoryItem && (
+          <ResturantsList
+            title={category}
+            description={'Fast Food'}
+            resturants={categoryItem}
+          />
+        )}
+        {resturants && (
+          <ResturantsList
+            title={'Hot & Spicy'}
+            description={'Fast Food'}
+            resturants={resturants}
+          />
+        )}
       </ScrollView>
     </SafeAreaView>
   );

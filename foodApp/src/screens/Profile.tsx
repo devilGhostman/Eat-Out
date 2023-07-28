@@ -12,7 +12,13 @@ import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import {useSelector, useDispatch} from 'react-redux';
+import {logout} from '../app/slices/user';
+
 const Profile = ({navigation}: any) => {
+  const dispatch = useDispatch();
+  const {user} = useSelector((state: any) => state.user);
+  console.log(user);
   return (
     <ScrollView
       className="flex-1 bg-lightBg dark:bg-darkBg"
@@ -43,13 +49,16 @@ const Profile = ({navigation}: any) => {
       <View
         className="mx-5 mt-4 px-5 py-4 bg-lightBg dark:dark:bg-[#ffffff13] rounded-xl flex-row justify-start items-center"
         style={{elevation: 4}}>
-        <Image source={require('../assets/category.png')} />
+        <Image
+          source={{uri: user.userPicture}}
+          style={{height: 50, width: 50, borderRadius: 25}}
+        />
         <View className="ml-4">
           <Text className="text-lightText dark:text-darkText font-bold text-[20px]">
-            Ameen Farook
+            {user.userName}
           </Text>
           <Text className="text-lightSecText dark:text-darkSecText font-medium text-[15px]">
-            ameeen.faroook@gmail.com
+            {user.email}
           </Text>
         </View>
       </View>
@@ -139,7 +148,11 @@ const Profile = ({navigation}: any) => {
         <Text className="mt-5 font-semibold text-[14px] text-lightText dark:text-darkText">
           More
         </Text>
-        <Pressable className="flex-row items-center justify-between mt-4">
+        <Pressable
+          onPress={() => {
+            dispatch(logout());
+          }}
+          className="flex-row items-center justify-between mt-4">
           <View className="flex-row items-center">
             <FeatherIcon name="log-out" size={18} color={'#FB923C'} />
             <Text className="text-[13px] text-lightSecText dark:text-darkSecText font-medium ml-2">

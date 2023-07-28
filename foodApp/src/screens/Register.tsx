@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from '../components/Button/CustomButton';
 
 import {useForm} from 'react-hook-form';
+import {userRegister} from '../api/apiCall';
 
 const EMAIL_REGEX =
   /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
@@ -44,7 +45,8 @@ const Register = ({navigation}: any) => {
     setisLoading(true);
     setisError(false);
     try {
-      console.log(data);
+      // console.log(data);
+      await userRegister(data);
       navigation.pop();
     } catch (error) {
       setisError(true);
