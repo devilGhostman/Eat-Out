@@ -2,6 +2,10 @@
 ## Demo
 For demo you can download [APK](https://drive.google.com/file/d/1OMxeuzLrB6i1Ou0yUYUVKoyJfaKk63IE/view?usp=sharing) 
 
+## Preview
+https://github.com/devilGhostman/ReactNative-PlayMe/assets/82955240/0c767c22-7996-445e-b2e0-cb9fe84e4047
+
+
 ## Getting started
 ### Prerequisites
 **Node version 14.x**
